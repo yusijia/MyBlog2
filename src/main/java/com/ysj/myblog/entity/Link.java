@@ -7,6 +7,7 @@ package com.ysj.myblog.entity;
  */
 public class Link {
 
+	/*与数据库表有关联的属性*/
 	private Integer id; 		// 编号
 	private String linkName; 	// 链接名称
 	private String linkUrl;		// 链接地址

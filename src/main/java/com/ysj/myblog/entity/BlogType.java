@@ -7,11 +7,12 @@ package com.ysj.myblog.entity;
  *
  */
 public class BlogType {
-
+	/*与数据库表有关联的属性*/
 	private Integer id; 		// 编号
 	private String typeName; 	// 博客类型名称
 	private Integer orderNo; 	// 排序序号 从小到大排序
-	
+
+	/*与数据库表无关联的属性*/
 	private Integer blogCount; 	// 数量(该属性没有与数据库对应)
 	
 	public Integer getId() {

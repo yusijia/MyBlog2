@@ -6,9 +6,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<resultMap type="Link" id="LinkResult">
 		<result property="id" column="id"/>
-		<result property="linkName" column="linkName"/>
-		<result property="linkUrl" column="linkUrl"/>
-		<result property="orderNo" column="orderNo"/>
+		<result property="linkName" column="link_name"/>
+		<result property="linkUrl" column="link_url"/>
+		<result property="orderNo" column="order_no"/>
 	</resultMap>
 	
 	<select id="list" parameterType="Map" resultMap="LinkResult">
@@ -24,7 +24,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<insert id="add" parameterType="BlogType">
-		insert into t_link(id,linkName,linkUrl,orderNo)
+		insert into t_link(id,link_name,link_url,order_no)
 		values(null,#{linkName},#{linkUrl},#{orderNo});
 	</insert>
 	
@@ -32,13 +32,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		update t_link
 		<set>
 			<if test="linkName!=null and linkName!=''">
-				linkName=#{linkName},
+				link_name=#{linkName},
 			</if>
 			<if test="linkUrl!=null and linkUrl!=''">
-				linkUrl=#{linkUrl},
+				link_url=#{linkUrl},
 			</if>
 			<if test="orderNo!=null">
-				orderNo=#{orderNo},
+				order_no=#{orderNo},
 			</if>
 		</set>
 		where id=#{id}

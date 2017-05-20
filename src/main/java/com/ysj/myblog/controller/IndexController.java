@@ -8,11 +8,11 @@ import org.springframework.web.bind.annotation.GetMapping;
  * @Description:
  */
 @Controller
-public class Index2Controller {
+public class IndexController {
 
-    @GetMapping("/index2")
+    @GetMapping("/index")
     public String index() {
-        return "index2";
+        return "index";
     }
 
 }

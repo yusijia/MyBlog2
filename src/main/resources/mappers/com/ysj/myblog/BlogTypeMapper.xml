@@ -6,18 +6,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<resultMap type="BlogType" id="BlogTypeResult">
 		<result property="id" column="id"/>
-		<result property="typeName" column="typeName"/>
-		<result property="orderNo" column="orderNo"/>
+		<result property="typeName" column="type_name"/>
+		<result property="orderNo" column="order_no"/>
 	</resultMap>
 	
 	
-	
+	<!-- 注意: blogCount在BlogType类中有属性，只是没和数据库关联 -->
 	<select id="blogTypesAndCounts" resultMap="BlogTypeResult">
-		SELECT bt.id,bt.typeName,COUNT(b.id) AS blogCount 
+		SELECT bt.id,bt.type_name,COUNT(b.id) AS blogCount
 		FROM t_blog b RIGHT JOIN t_blogtype bt 
 		ON b.typeId=bt.id 
-		GROUP BY bt.typeName 
-		ORDER BY bt.orderNo;
+		GROUP BY bt.type_name
+		ORDER BY bt.order_no;
 	</select>	
 	
 	<select id="findById" parameterType="Integer" resultMap="BlogTypeResult">
@@ -36,17 +36,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<insert id="add" parameterType="BlogType">
-		insert into t_blogType(id,typeName,orderNo) values(null,#{typeName},#{orderNo});
+		insert into t_blogType(id,type_name,order_no)
+		values(null,#{typeName},#{orderNo});
 	</insert>
 	
 	<update id="update" parameterType="BlogType">
 		update t_blogType
 		<set>
 			<if test="typeName!=null and typeName!=''">
-				typeName=#{typeName},
+				type_name=#{typeName},
 			</if>
 			<if test="orderNo!=null">
-				orderNo=#{orderNo},
+				order_no=#{orderNo},
 			</if>
 		</set>
 		where id=#{id}

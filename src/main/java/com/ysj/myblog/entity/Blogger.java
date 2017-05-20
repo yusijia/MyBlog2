@@ -2,12 +2,13 @@ package com.ysj.myblog.entity;
 
 
 /**
- * 
+ * 作者实体
  * @author ysj
  *
  */
 public class Blogger {
 
+	/*与数据库表有关联的属性*/
 	private int id;				// 博主id
 	private String userName;	// 用户名
 	private String password; 	// 用户密码
