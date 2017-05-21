@@ -6,7 +6,7 @@
 
     <Properties>
         <!-- 配置日志文件输出目录 -->
-        <Property name="LOG_HOME">K://myblog-log4j-test</Property>
+        <Property name="LOG_HOME">K://log4j-test</Property>
     </Properties>
 
     <!--

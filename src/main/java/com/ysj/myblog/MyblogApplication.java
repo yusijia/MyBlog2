@@ -5,10 +5,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.ServletComponentScan;
 
-@SpringBootApplication
+@SpringBootApplication//等同于 @Configuration @EnableAutoConfiguration @ComponentScan
 @MapperScan("com.ysj.myblog.dao")
 @ServletComponentScan
-// @ImportResource(locations={"classpath:XXX.xml"})
+// @ImportResource(locations={"classpath:applicationContext.xml"})
 public class MyblogApplication {
 
 	public static void main(String[] args) {

@@ -39,5 +39,13 @@ public class BlogType {
 	public void setBlogCount(Integer blogCount) {
 		this.blogCount = blogCount;
 	}
-	
+
+	@Override
+	public String toString() {
+		return "BlogType{" +
+				"id=" + id +
+				", typeName='" + typeName + '\'' +
+				", orderNo=" + orderNo +
+				'}';
+	}
 }

@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.ysj.myBlog.dao.BlogDao">
+<mapper namespace="com.ysj.myblog.dao.BlogDao">
 
 	<resultMap type="Blog" id="BlogResult">
 		<result property="id" column="id"/>
@@ -15,11 +15,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="content" column="content"/>
 		<result property="keywords" column="keywords"/>
 		
-		<!-- 主外键的映射,Blog对象的blogType对应数据库里的type_id, 关联BlogType的主键 -->
-		<association property="blogType" column="type_id" select="com.ysj.myBlog.dao.BlogTypeDao.findById"></association>
+		<!-- 主外键的映射,Blog对象的blogType关联BlogType的主键 -->
+		<!-- 查出上面的Blog属性时，通过传与数据库对应的type_id到BlogTypeDao.findById方法同时查出BlogType对象 -->
+		<association property="blogType" column="type_id" select="com.ysj.myblog.dao.BlogTypeDao.findById"></association>
 	</resultMap>
 	
-	<select id="blogTypesAndCountsByDate" resultMap="Map">
+	<select id="blogTypesAndCountsByDate" resultMap="BlogResult">
 		SELECT DATE_FORMAT(create_time,'%Y年%m月') AS releaseDateStr,COUNT(*) AS blogCount
 		FROM t_blog 
 		GROUP BY DATE_FORMAT(create_time,'%Y年%m月')

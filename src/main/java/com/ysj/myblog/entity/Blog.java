@@ -25,7 +25,7 @@ public class Blog {
 
 	/*与数据库表无关联的属性*/
 	private String contentNoTag; // 博客内容，无网页标签 Lucene分词用到
-	// private Integer blogCount; 	// 博客数量 非博客实际属性 主要是 根据发布日期归档查询数量时用到
+	private Integer blogCount; 	// 博客数量 非博客实际属性 主要是 根据发布日期归档查询数量时用到
 	private String releaseDateStr; // 格式化发布日期的字符串 只取年和月
 	private List<String> imageList = new LinkedList<String>(); // 博客里存在的图片，主要用于列表展示的缩略图
 	
@@ -65,12 +65,12 @@ public class Blog {
 	public void setKeywords(String keywords) {
 		this.keywords = keywords;
 	}
-	/*public Integer getBlogCount() {
+	public Integer getBlogCount() {
 		return blogCount;
 	}
 	public void setBlogCount(Integer blogCount) {
 		this.blogCount = blogCount;
-	}*/
+	}
 	public String getReleaseDateStr() {
 		return releaseDateStr;
 	}
@@ -112,5 +112,25 @@ public class Blog {
 	}
 	public void setUpdateTime(Date updateTime) {
 		this.updateTime = updateTime;
+	}
+
+	@Override
+	public String toString() {
+		return "Blog{" +
+				"id=" + id +
+				", title='" + title + '\'' +
+				", summary='" + summary + '\'' +
+				", createTime=" + createTime +
+				", updateTime=" + updateTime +
+				", countOfClick=" + countOfClick +
+				", countOfReply=" + countOfReply +
+				", content='" + content + '\'' +
+				", keywords='" + keywords + '\'' +
+				", blogType=" + blogType +
+				", contentNoTag='" + contentNoTag + '\'' +
+				", blogCount=" + blogCount +
+				", releaseDateStr='" + releaseDateStr + '\'' +
+				", imageList=" + imageList +
+				'}';
 	}
 }

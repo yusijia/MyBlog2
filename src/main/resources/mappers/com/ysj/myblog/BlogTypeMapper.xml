@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.ysj.myBlog.dao.BlogTypeDao">
+<mapper namespace="com.ysj.myblog.dao.BlogTypeDao">
 
 	<resultMap type="BlogType" id="BlogTypeResult">
 		<result property="id" column="id"/>
@@ -15,33 +15,34 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="blogTypesAndCounts" resultMap="BlogTypeResult">
 		SELECT bt.id,bt.type_name,COUNT(b.id) AS blogCount
 		FROM t_blog b RIGHT JOIN t_blogtype bt 
-		ON b.typeId=bt.id 
+		ON b.type_id=bt.id
 		GROUP BY bt.type_name
 		ORDER BY bt.order_no;
 	</select>	
 	
 	<select id="findById" parameterType="Integer" resultMap="BlogTypeResult">
-		select * from t_blogType where id=#{id}
+		select * from t_blogtype where id=#{id}
 	</select>
 	
 	<select id="list" parameterType="Map" resultMap="BlogTypeResult">
-		select * from t_blogType
+		select * from t_blogtype
 		<if test="start!=null and size!=null">
 			limit #{start},#{size}
 		</if>
 	</select>
-	
+
+	<!-- 参数为Map留给以后做扩展 -->
 	<select id="getTotal" parameterType="Map" resultType="Long">
-		select count(*) from t_blogType
+		select count(*) from t_blogtype
 	</select>
 	
 	<insert id="add" parameterType="BlogType">
-		insert into t_blogType(id,type_name,order_no)
+		insert into t_blogtype(id,type_name,order_no)
 		values(null,#{typeName},#{orderNo});
 	</insert>
 	
 	<update id="update" parameterType="BlogType">
-		update t_blogType
+		update t_blogtype
 		<set>
 			<if test="typeName!=null and typeName!=''">
 				type_name=#{typeName},
@@ -54,7 +55,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</update>
 	
 	<delete id="delete" parameterType="Integer">
-		delete from t_blogType where id=#{id}
+		delete from t_blogtype where id=#{id}
 	</delete>
 	
 </mapper> 

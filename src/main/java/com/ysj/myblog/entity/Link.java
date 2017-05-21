@@ -37,6 +37,14 @@ public class Link {
 	public void setOrderNo(Integer orderNo) {
 		this.orderNo = orderNo;
 	}
-	
-	
+
+	@Override
+	public String toString() {
+		return "Link{" +
+				"id=" + id +
+				", linkName='" + linkName + '\'' +
+				", linkUrl='" + linkUrl + '\'' +
+				", orderNo=" + orderNo +
+				'}';
+	}
 }

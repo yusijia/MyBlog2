@@ -36,6 +36,13 @@ public class PageBean {
 	public int getStart() {
 		return (page-1)*pageSize;
 	}
-	
-	
+
+	@Override
+	public String toString() {
+		return "PageBean{" +
+				"page=" + page +
+				", pageSize=" + pageSize +
+				", start=" + start +
+				'}';
+	}
 }

@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.ysj.myBlog.dao.BloggerDao">
+<mapper namespace="com.ysj.myblog.dao.BloggerDao">
 
 	<resultMap type="Blogger" id="BloggerResult">
 		<result property="id" column="id"/>
@@ -17,11 +17,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="getByUserName" parameterType="String" resultMap="BloggerResult">
 		select * from t_blogger where user_name=#{userName}
 	</select>
-	
+
+	<!-- 博客系统只有一个博主所以where id=1写死了 -->
 	<select id="find" resultMap="BloggerResult">
 		select * from t_blogger where id=1;
 	</select>
-	
+
+	<!-- 博客系统只有一个博主所以where id=1写死了 -->
 	<update id="update" parameterType="Blogger">
 		update t_blogger
 		<set>
