@@ -97,6 +97,22 @@ public class BlogDaoTest {
         System.out.println(blog2);
     }
 
+    /**
+     * 测试更新文章点击率
+     * @throws Exception
+     */
+    @Test
+    public void update2() throws Exception {
+        Blog blog = blogDao.findById(59);
+
+        // 访问量加1
+        blog.setCountOfClick(blog.getCountOfClick()+1);
+        blogDao.update(new Blog(blog.getId(),
+                blog.getUpdateTime(),
+                blog.getCountOfClick()));// 更新数据库数据
+        System.out.println(blogDao.findById(59));
+    }
+
     @Test
     public void getLastBlog() throws Exception {
         Blog blog = blogDao.getLastBlog(40);

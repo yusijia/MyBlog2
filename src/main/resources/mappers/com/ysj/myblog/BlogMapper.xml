@@ -78,8 +78,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				content=#{content},
 			</if>
 			<!-- 支持级联。blogType也是对象 -->
-			<if test="blogType.id!=null">
-				type_id=#{blogType.id},
+			<if test="blogType!=null">
+				<if test="blogType.id!=null">
+					type_id=#{blogType.id},
+				</if>
+			</if>
+
+			<if test="updateTime!=null">
+				update_time=#{updateTime},
 			</if>
 			<if test="countOfClick!=null">
                 count_of_click=#{countOfClick},
