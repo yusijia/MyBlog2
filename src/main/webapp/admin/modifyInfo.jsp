@@ -26,7 +26,7 @@
 		var sign=$("#sign").val();
 		// 注意这里获取的content是有html标签的
 		var profile=UE.getEditor('profile').getContent();
-		
+
 		if(nickName==null || nickName==''){
 			alert("请输入昵称！");
 		}else if(sign==null || sign==''){
@@ -65,7 +65,7 @@
 			<tr>
 				<td>个性签名：</td>
 				<td>
-					<input type="text" id="sign" name="sign" style="width: 400px"  />
+					<input type="text" id="sign" name="blogger.sign" style="width: 400px"  />
 				</td>
 			</tr>
 			<tr>

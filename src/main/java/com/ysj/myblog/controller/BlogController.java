@@ -52,6 +52,8 @@ public class BlogController {
 		
 		// 访问量加1
 		blog.setCountOfClick(blog.getCountOfClick()+1);
+		// 更新blog的countOfClick。id用于查blog，updateTime还是该blog的，点击数在上面加1了
+		// 注意更新blog的那个方法不需要改，因为数据库里的update_time自动有设置更新字段时自动更新他
 		blogService.update(new Blog(blog.getId(),
 									blog.getUpdateTime(),
 									blog.getCountOfClick()));// 更新数据库数据

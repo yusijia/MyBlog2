@@ -87,7 +87,7 @@
 					{
 						ids:ids
 					},function(result){
-					if(result.success){// ajax访问成功
+					if(result.success){// 返回成功
 						if(result.exist){// 有的博客类型下有文章不能删除，没有文章的可以删除
 							// $.messager.alert(result.blogTypeId);
 							for(var i = 0; i < result.blogTypeId.length; i++){

@@ -24,7 +24,7 @@
 		var title=$("#title").val();
 		var blogTypeId=$("#blogTypeId").combobox("getValue")
 		var content=UE.getEditor('editor').getContent()
-		var keyWord=$("#keyWord").val();
+		var keywords=$("#keywords").val();
 		
 		if(title==null || title==''){
 			alert("请输入标题！");
@@ -42,7 +42,7 @@
 					'contentNoTag':UE.getEditor('editor').getContentTxt(),
 					'content':content,
 					'summary':UE.getEditor('editor').getContentTxt().substr(0,155),
-					'keyWord':keyWord
+					'keywords':keywords
 				},function(result){
 					if(result.success){
 						alert("博客修改成功！");
@@ -86,7 +86,7 @@
 		<tr>
 			<td>关键字：</td>
 			<td>
-				<input type="text" id="keyWord" name="keyWord" style="width: 400px"/>&nbsp;(多个关键字中间用空格隔开)
+				<input type="text" id="keywords" name="keywords" style="width: 400px"/>&nbsp;(多个关键字中间用空格隔开)
 			</td>
 		</tr>
 		<tr>
@@ -113,7 +113,7 @@
    				onsuccess : function(result){
    					result = eval("(" + result.responseText + ")");
    					$("#title").val(result.title);
-   					$("#keyWord").val(result.keyWord);
+   					$("#keywords").val(result.keywords);
    					$("#blogTypeId").combobox("setValue",result.blogType.id);// easyUI的方法，支持级联
    					UE.getEditor('editor').setContent(result.content);
    				}

@@ -22,7 +22,7 @@
 			</div>
 		<div>
 		<div class="blog_info">
-			发布时间：『 <fmt:formatDate value="${blog.releaseDate }" type="date" pattern="yyyy-MM-dd HH:mm"/>』&nbsp;&nbsp;博客类别：${blog.blogType.typeName }&nbsp;&nbsp;阅读(${blog.clickHit }) 评论(${blog.replyHit })
+			发布时间：『 <fmt:formatDate value="${blog.createTime }" type="date" pattern="yyyy-MM-dd HH:mm"/>』&nbsp;&nbsp;博客类别：${blog.blogType.typeName }&nbsp;&nbsp;阅读(${blog.countOfClick }) 评论(${blog.countOfReply })
 		</div>
 		<div class="blog_content">
 		${blog.content }
@@ -31,13 +31,12 @@
 		<div class="blog_keyWord">
 			<font><strong>关键字：</strong></font>
 			<c:choose>
-				<c:when test="${keyWords==null }">
+				<c:when test="${keywords==null }">
 					&nbsp;&nbsp;无
 				</c:when>
 				<c:otherwise>
-					<c:forEach var="keyWord" items="${keyWords }">
-						&nbsp;&nbsp;&nbsp;&nbsp;<a href="${pageContext.request.contextPath}/blog/q.html?q=${keyWord}" target="_blank">${keyWord }</a>&nbsp;&nbsp;
-						
+					<c:forEach var="keyword" items="${keywords }">
+						&nbsp;&nbsp;&nbsp;&nbsp;<a href="${pageContext.request.contextPath}/blog/q.html?q=${keyword}" target="_blank">${keyword}</a>&nbsp;&nbsp;
 					</c:forEach>
 				</c:otherwise>
 			</c:choose>

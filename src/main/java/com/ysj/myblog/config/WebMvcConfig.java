@@ -1,9 +1,6 @@
 package com.ysj.myblog.config;
 
-import org.springframework.boot.web.servlet.ServletRegistrationBean;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
@@ -15,11 +12,13 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 public class WebMvcConfig extends WebMvcConfigurerAdapter {
 
     /**
+     * 这个暂时删除，有了下面的配置后，文件上传功能用不了，拦截了不该拦截的东西
+     *
      * 修改DispatcherServlet默认配置
      * @param dispatcherServlet
      * @return
      */
-    @Bean
+    /*@Bean
     public ServletRegistrationBean dispatcherRegistration(DispatcherServlet dispatcherServlet ){
         ServletRegistrationBean registration = new ServletRegistrationBean(dispatcherServlet);
         registration.getUrlMappings().clear();
@@ -30,6 +29,10 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
         // 拦截首页请求
         registration.addUrlMappings("/");
         return registration;
-    }
+    }*/
 
+    @Override
+    public void addViewControllers(ViewControllerRegistry registry) {
+        super.addViewControllers(registry);
+    }
 }
