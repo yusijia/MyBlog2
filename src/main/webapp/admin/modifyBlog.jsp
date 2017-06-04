@@ -19,8 +19,8 @@
 <script type="text/javascript" charset="UTF-8" src="${pageContext.request.contextPath}/static/ueditor/lang/zh-cn/zh-cn.js"></script>
 
 <script type="text/javascript">
-	
-	function submitData(){
+
+    function submitData(){
 		var title=$("#title").val();
 		var blogTypeId=$("#blogTypeId").combobox("getValue")
 		var content=UE.getEditor('editor').getContent()
@@ -35,8 +35,7 @@
 		}else{
 			$.post("${pageContext.request.contextPath}/admin/blog/save.do",
 				{
-					'id':'${param.id}',// param是ueditor内置的对象
-					
+					'id':'${blog.id}',
 					'title':title,
 					'blogType.id':blogTypeId,
 					'contentNoTag':UE.getEditor('editor').getContentTxt(),
@@ -52,7 +51,6 @@
 			},"json");
 		}
 	}
-	
 
 </script>
 </head>
@@ -63,14 +61,14 @@
 		<tr>
 			<td width="80px">博客标题：</td>
 			<td>
-				<input type="text" id="title" name="title" style="width: 400px"/>
+				<input type="text" id="title" name="title" style="width: 400px" />
 			</td>
 		</tr>
 		<tr>
 			<td>所属类别：</td>
 			<td>
 				<select class="easyui-combobox" style="width: 154px" id="blogTypeId" name="blogType.id" editable="false" panelHeight="auto">
-					<option value="">请选择博客类别...</option>
+					<option value="">请选择所属类别...</option>
 					<c:forEach var="blogType" items="${blogTypeCountList }">
 						<option value="${blogType.id }">${blogType.typeName }</option>
 					</c:forEach>
@@ -101,23 +99,13 @@
 <!-- 实例化编辑器 -->
 <script type="text/javascript">
     var ue = UE.getEditor('editor');
-	// 将后台传来的prifile传到ueditor的script里要用ueditor下面这个封装的ajax方法
-    // 用ueditor的封装的方法来回显后台传来的数据
+
     ue.addListener("ready",function(){
-    	// 通过ajax请求数据
-    	UE.ajax.request("${pageContext.request.contextPath}/admin/blog/findById.do",
-    		{
-   				method:"post",
-   				async:false,
-   				data:{"id":"${param.id}"},// param是ueditor内置的对象
-   				onsuccess : function(result){
-   					result = eval("(" + result.responseText + ")");
-   					$("#title").val(result.title);
-   					$("#keywords").val(result.keywords);
-   					$("#blogTypeId").combobox("setValue",result.blogType.id);// easyUI的方法，支持级联
-   					UE.getEditor('editor').setContent(result.content);
-   				}
-   			});
+        // 注意setContent的参数是json对象
+        $("#title").val("${blog.title}");
+        $("#keywords").val("${blog.keywords}");
+        $("#blogTypeId").combobox("setValue","${blog.blogType.id}");// easyUI的方法，支持级联
+        UE.getEditor('editor').setContent("${blog.content}");
     });
 </script>
 

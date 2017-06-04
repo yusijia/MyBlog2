@@ -10,6 +10,7 @@ import com.ysj.myblog.util.StringUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
@@ -138,5 +139,24 @@ public class BlogAdminController {
 		// 将blog对象封装成json对象
 		String result = mapper.writeValueAsString(blog);
 		ResponseUtil.write(response, result);
+	}
+
+	/**
+	 * 修改blog
+	 * @param id
+	 * @throws Exception
+	 */
+	@RequestMapping("/modifyBlog")
+	public ModelAndView modifyBlog(@RequestParam(value="id")String id) throws Exception {
+		ModelAndView mav = new ModelAndView();
+		Blog blog = blogService.findById(Integer.parseInt(id));
+
+		if (blog.getContent().substring(0, 9).equals("markdown:")) {
+			mav.setViewName("/admin/writeMarkdownBlog");
+		} else {
+			mav.setViewName("/admin/modifyBlog");
+		}
+		mav.addObject("blog", blog);
+		return mav;
 	}
 }

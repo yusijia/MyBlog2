@@ -3,7 +3,6 @@ package com.ysj.myblog.config;
 import com.ysj.myblog.realm.MyRealm;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
-import org.apache.shiro.web.filter.authc.LogoutFilter;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
@@ -97,8 +96,8 @@ public class ShiroConfig {
 
         Map<String, Filter> filters = new LinkedHashMap<String, Filter>();
 
-        LogoutFilter logoutFilter = new LogoutFilter();
-        logoutFilter.setRedirectUrl("/login");
+        /*LogoutFilter logoutFilter = new LogoutFilter();
+        logoutFilter.setRedirectUrl("/login");*/
         // filters.put("logout",null);
         shiroFilterFactoryBean.setFilters(filters);
 

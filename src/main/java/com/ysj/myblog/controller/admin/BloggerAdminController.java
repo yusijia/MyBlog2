@@ -6,6 +6,7 @@ import com.ysj.myblog.service.BloggerService;
 import com.ysj.myblog.util.CryptographyUtil;
 import com.ysj.myblog.util.DateUtil;
 import com.ysj.myblog.util.ResponseUtil;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -108,5 +109,15 @@ public class BloggerAdminController {
 		String result = mapper.writeValueAsString(resultMap);
 		ResponseUtil.write(response, result);
 	}
-	
+
+	/**
+	 * 注销
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping("/logout")
+	public String logout()throws Exception{
+		SecurityUtils.getSubject().logout();
+		return "redirect:/login.jsp";
+	}
 }

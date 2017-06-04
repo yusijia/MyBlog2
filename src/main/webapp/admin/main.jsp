@@ -76,7 +76,24 @@
 		$("#newPassword").val("");
 		$("#newPassword2").val("");
 	}
-	
+
+    function refreshSystem(){
+        $.post("${pageContext.request.contextPath}/admin/system/refreshSystem.do",{},function(result){
+            if(result.success){
+                $.messager.alert("系统提示","已成功刷新系统缓存！");
+            }else{
+                $.messager.alert("系统提示","刷新系统缓存失败！");
+            }
+        },"json");
+    }
+
+    function logout(){
+        $.messager.confirm("系统提示","您确定要退出系统吗?",function(r){
+            if(r){
+                window.location.href="${pageContext.request.contextPath}/admin/blogger/logout.do";
+            }
+        });
+    }
 	
 </script>
 
@@ -88,7 +105,7 @@
 	<table style="padding: 5px" width="100%">
 		<tr>
 			<td width="50%">
-				<img alt="logo" src="/static/images/logo.png">
+				<%--<img alt="logo" src="/static/images/logo.png">--%>
 			</td>
 			<td valign="bottom" align="right" width="50%">
 				<font size="3">&nbsp;&nbsp;<strong>欢迎：</strong>${currentUser.userName }</font>
@@ -109,7 +126,8 @@
 	<div class="easyui-accordion" data-options="fit:true,border:false">
 		<div title="常用操作" data-options="selected:true,iconCls:'icon-item'" style="padding: 10px">
 			<a href="javascript:openTab('写博客','writeBlog.jsp','icon-writeblog')" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-writeblog'" style="width: 150px">写博客</a>
-			<a href="javascript:openTab('评论审核','commentReview.jsp','icon-review')" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-review'" style="width: 150px">评论审核</a>
+			<a href="javascript:openTab('博客信息管理','blogManage.jsp','icon-bkgl')" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-bkgl'" style="width: 150px;">博客信息管理</a>
+			<a href="javascript:openTab('博客类别信息管理','blogTypeManage.jsp','icon-bklb')" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-bklb'" style="width: 150px;">博客类别信息管理</a>
 		</div>
 		<div title="博客管理"  data-options="iconCls:'icon-bkgl'" style="padding:10px;">
 			<a href="javascript:openTab('写博客','writeBlog.jsp','icon-writeblog')" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-writeblog'" style="width: 150px;">写博客</a>
@@ -117,10 +135,6 @@
 		</div>
 		<div title="博客类别管理" data-options="iconCls:'icon-bklb'" style="padding:10px">
 			<a href="javascript:openTab('博客类别信息管理','blogTypeManage.jsp','icon-bklb')" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-bklb'" style="width: 150px;">博客类别信息管理</a>
-		</div>
-		<div title="评论管理"  data-options="iconCls:'icon-plgl'" style="padding:10px">
-			<a href="javascript:openTab('评论审核','commentReview.jsp','icon-review')" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-review'" style="width: 150px">评论审核</a>
-			<a href="javascript:openTab('评论信息管理','commentManage.jsp','icon-plgl')" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-plgl'" style="width: 150px;">评论信息管理</a>
 		</div>
 		<div title="个人信息管理"  data-options="iconCls:'icon-grxx'" style="padding:10px">
 			<a href="javascript:openTab('修改个人信息','modifyInfo.jsp','icon-grxxxg')" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-grxxxg'" style="width: 150px;">修改个人信息</a>

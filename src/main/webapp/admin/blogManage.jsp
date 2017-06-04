@@ -64,8 +64,8 @@
 			return;
 		}
 		var row=selectedRows[0];
-		// 调用父窗体的openTab方法(在main.jsp里)
-		window.parent.openTab('修改博客','modifyBlog.jsp?id='+row.id,'icon-writeblog');
+		// 调用父窗体的openTab方法(在main.jsp里) pageContext.request.contextPath里已经有/admin了
+		window.parent.openTab('修改博客','${pageContext.request.contextPath}/blog/modifyBlog.do?id='+row.id,'icon-writeblog');
 	}
 	
 </script>

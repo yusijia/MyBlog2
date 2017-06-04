@@ -53,8 +53,11 @@ public class BlogIndex {
 	 * @throws Exception
 	 */
 	private IndexWriter getWriter() throws Exception{
-		dir = FSDirectory.open(Paths.get("D://lucene"));
+		// 生成的索引写到这个目录下
+		dir = FSDirectory.open(Paths.get("D://lucene-index"));
+		// 中文分词器
 		SmartChineseAnalyzer analyzer = new SmartChineseAnalyzer();
+		// 配置中文分词器
 		IndexWriterConfig indexWriterConfig = new IndexWriterConfig(analyzer);
 		IndexWriter writer = new IndexWriter(dir, indexWriterConfig);
 		return writer;
@@ -63,7 +66,7 @@ public class BlogIndex {
 	/**
 	 * 后台添加博客后进行添加索引操作
 	 * 前台lucene搜索时显示博客标题(链接到该博客,所以要取该博客的id)，发布日期，无html标签的博客内容
-	 * @param blog
+	 * @param blog Blog实例
 	 * @throws Exception
 	 */
 	public void addIndex(Blog blog) throws Exception{
@@ -75,7 +78,7 @@ public class BlogIndex {
 		// 查找的时候对标题也需要分词所以不用StringField
 		doc.add(new TextField("title", blog.getTitle(), Field.Store.YES));
 		// 发布日期也不需要进行分词操作，所以用StringField
-		doc.add(new StringField("releaseDate", 
+		doc.add(new StringField("releaseDateStr",
 								DateUtil.formatDate(new Date(), "yyy-MM-dd"),
 								Field.Store.YES));
 		// 对博客内容(html标签)进行分词，用TextField, 注意contentNoTag没有存到数据库里
@@ -86,7 +89,7 @@ public class BlogIndex {
 	
 	/**
 	 * 更新指定博客的索引
-	 * @param blog
+	 * @param blog Blog实例
 	 * @throws Exception
 	 */
 	public void updateIndex(Blog blog)throws Exception{
@@ -94,7 +97,7 @@ public class BlogIndex {
 		Document doc = new Document();
 		doc.add(new StringField("id",String.valueOf(blog.getId()),Field.Store.YES));
 		doc.add(new TextField("title",blog.getTitle(),Field.Store.YES));
-		doc.add(new StringField("releaseDate",DateUtil.formatDate(new Date(), "yyyy-MM-dd"),Field.Store.YES));
+		doc.add(new StringField("releaseDateStr",DateUtil.formatDate(new Date(), "yyyy-MM-dd"),Field.Store.YES));
 		doc.add(new TextField("contentNoTag",blog.getContentNoTag(),Field.Store.YES));
 		writer.updateDocument(new Term("id",String.valueOf(blog.getId())), doc);
 		writer.close();
@@ -102,7 +105,7 @@ public class BlogIndex {
 	
 	/**
 	 * 删除指定博客的索引
-	 * @param blogId
+	 * @param blogId 博客ID
 	 * @throws Exception
 	 */
 	public void deleteIndex(String blogId)throws Exception{
@@ -115,13 +118,14 @@ public class BlogIndex {
 	
 	/**
 	 * 查询博客信息
-	 * @param q
-	 * @return
+	 * @param q 查询关键字
+	 * @return 返回列表，存放了查询出的博客
 	 * @throws Exception
 	 */
 	public List<Blog> searchBlog(String q)throws Exception{
+		// 从这个目录下获取索引
+		dir = FSDirectory.open(Paths.get("D://lucene-index"));
 		// 获取IndexReader
-		dir = FSDirectory.open(Paths.get("D://lucene"));
 		IndexReader reader = DirectoryReader.open(dir);
 		// 获取IndexSearch
 		IndexSearcher is = new IndexSearcher(reader);
@@ -142,9 +146,11 @@ public class BlogIndex {
 		TopDocs hits = is.search(booleanQuery.build(), 100);
 		// 计算title得分高的排在前面(得分主要以title得分为主)
 		QueryScorer scorer = new QueryScorer(query);
+
 		// 配置要查找的代码片段高亮方案
 		Fragmenter fragmenter = new SimpleSpanFragmenter(scorer);
-		SimpleHTMLFormatter simpleHTMLFormatter = new SimpleHTMLFormatter("<b><font color='red'>", "</font></b>");// 标签替换
+		// 高亮内容设置标签样式
+		SimpleHTMLFormatter simpleHTMLFormatter = new SimpleHTMLFormatter("<b><font color='red'>", "</font></b>");
 		Highlighter highlighter = new Highlighter(simpleHTMLFormatter, scorer);
 		highlighter.setTextFragmenter(fragmenter);
 		
@@ -155,7 +161,7 @@ public class BlogIndex {
 			// 添加要获取的blog信息到Blog对象里
 			Blog blog = new Blog();
 			blog.setId(Integer.parseInt(doc.get("id")));
-			blog.setReleaseDateStr(doc.get("releaseDate"));
+			blog.setReleaseDateStr(doc.get("releaseDateStr"));
 			// 将title和content里的像'<','>'...这种特殊字符,标签进行转义
 			String title = StringEscapeUtils.escapeHtml(doc.get("title"));
 			String content = StringEscapeUtils.escapeHtml(doc.get("contentNoTag"));

@@ -19,9 +19,14 @@
 <script type="text/javascript" charset="UTF-8" src="${pageContext.request.contextPath}/static/ueditor/lang/zh-cn/zh-cn.js"></script>
 
 <script type="text/javascript">
-	
+    /*$(document).ready(function(){
+        result=eval("("+result.responseText+")");
+        $("#nickName").val(result.nickName);
+        $("#sign").val(result.sign);
+        UE.getEditor('profile').setContent(result.profile);
+    });*/
 
-	function submitData(){
+    function submitData(){
 		var nickName=$("#nickName").val();
 		var sign=$("#sign").val();
 		// 注意这里获取的content是有html标签的

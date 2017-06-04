@@ -26,7 +26,11 @@
 		var blogTypeId=$("#blogTypeId").combobox("getValue");
 		// 注意这里获取的content是有html标签的
 		var content=UE.getEditor('editor').getContent();
-		var keyWord=$("#keyWord").val();
+        // 无html标签的博客内容，注意这个没有存到数据库里,用于给Lucene建blogIndex
+		var contentNoTag = UE.getEditor('editor').getContentTxt();
+		var summary = UE.getEditor('editor').getContentTxt().substr(0,155);
+		var keywords=$("#keywords").val();
+
 		
 		if(title==null || title==''){
 			alert("请输入标题！");
@@ -38,13 +42,12 @@
 			// 请求后台的地址要加do后缀，配置文件里配置的
 			$.post("${pageContext.request.contextPath}/admin/blog/save.do",
 				{
-					'title':title,
-					'blogType.id':blogTypeId,
-					'content':content,
-					// 无html标签的博客内容，注意这个没有存到数据库里
-					'contentNoTag':UE.getEditor('editor').getContentTxt(),
-					'summary':UE.getEditor('editor').getContentTxt().substr(0,155),
-					'keyWord':keyWord
+					'title' : title,
+					'blogType.id' : blogTypeId,
+					'content' : content,
+					'contentNoTag' : contentNoTag,
+					'summary' : summary,
+					'keywords' : keywords
 				},
 				function(result){
 					if(result.success){
@@ -58,13 +61,17 @@
 	}
 	
 	// 重置数据
-	function resultValue(){
+	function resultValue() {
 		$("#title").val("");
 		$("#blogTypeId").combobox("setValue","");
 		UE.getEditor('editor').setContent('');
-		$("#keyWord").val("");
+		$("#keywords").val("");
 	}
-	
+
+    function toMarkdownEditor() {
+	    // 重定向到相关页面
+        window.location="${pageContext.request.contextPath}/admin/writeMarkdownBlog.jsp";
+	}
 	
 </script>
 </head>
@@ -77,6 +84,10 @@
 			<td>
 				<input type="text" id="title" name="title" style="width: 400px"/>
 			</td>
+
+			<button type="button" class="btn btn-default" onclick="toMarkdownEditor()">markdown模式</button>
+			<button type="button" class="btn btn-primary">普通模式</button>
+
 		</tr>
 		<tr>
 			<td>所属类别：</td>
@@ -98,7 +109,7 @@
 		<tr>
 			<td>关键字：</td>
 			<td>
-				<input type="text" id="keyWord" name="keyWord" style="width: 400px"/>&nbsp;(多个关键字中间用空格隔开)
+				<input type="text" id="keywords" name="keywords" style="width: 400px"/>&nbsp;(多个关键字中间用空格隔开)
 			</td>
 		</tr>
 		<tr>
@@ -115,8 +126,6 @@
     var ue = UE.getEditor('editor');
     
 </script>
-
-
 
 </body>
 </html>
