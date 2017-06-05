@@ -134,7 +134,8 @@ public class IndexController {
 			List<String> imageList = blog.getImageList();// 存该文章的缩略图
 			String blogInfo = blog.getContent();		 // 存该文章的内容
 			Document doc = Jsoup.parse(blogInfo);		 // 解析文章内容
-			Elements jpgs = doc.select("img[src$=.jpg]");// 选择器提取img元素后缀为jpg的图
+			// Elements jpgs = doc.select("img[src$=.jpg]");// 选择器提取img元素后缀为jpg的图
+			Elements jpgs = doc.select("img"); // 选择器提取img元素
 			for (int i = 0; i < jpgs.size(); i++) {
 				Element jpg = jpgs.get(i);
 				imageList.add(jpg.toString());			 

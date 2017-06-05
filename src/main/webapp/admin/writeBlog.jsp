@@ -26,6 +26,7 @@
 		var blogTypeId=$("#blogTypeId").combobox("getValue");
 		// 注意这里获取的content是有html标签的
 		var content=UE.getEditor('editor').getContent();
+        content = content.replace(/"/g, "'");// 将全文"换成'，不然后台修改blog页面会显示语法错误,例如UE.getEditor('editor').getContent("<img src="">")
         // 无html标签的博客内容，注意这个没有存到数据库里,用于给Lucene建blogIndex
 		var contentNoTag = UE.getEditor('editor').getContentTxt();
 		var summary = UE.getEditor('editor').getContentTxt().substr(0,155);
@@ -85,8 +86,8 @@
 				<input type="text" id="title" name="title" style="width: 400px"/>
 			</td>
 
-			<button type="button" class="btn btn-default" onclick="toMarkdownEditor()">markdown模式</button>
-			<button type="button" class="btn btn-primary">普通模式</button>
+			<button type="button" class="" onclick="toMarkdownEditor()">markdown模式</button>
+			<button type="button" style="cursor: not-allowed;opacity: 0.6;">普通模式</button>
 
 		</tr>
 		<tr>
