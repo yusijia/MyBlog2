@@ -41,13 +41,14 @@
 			success:function(result){
 				// 将后台传来的json字符串转为json对象
 				var result=eval('('+result+')');
-				if(result.success){
+				if(result.data.success){
 					$.messager.alert("系统提示","保存成功！");
 					resetValue();
 					$("#dlg").dialog("close");
 					$("#dg").datagrid("reload");
 				}else{
-					$.messager.alert("系统提示","保存失败！");
+				    // 一次只提醒一个错误原因
+					$.messager.alert("系统提示","保存失败！"+result.data[0].defaultMessage);
 					return;
 				}
 			}
@@ -87,17 +88,17 @@
 					{
 						ids:ids
 					},function(result){
-					if(result.success){// 返回成功
-						if(result.exist){// 有的博客类型下有文章不能删除，没有文章的可以删除
+					if(result.data.success){// 返回成功
+						if(result.data.exist){// 有的博客类型下有文章不能删除，没有文章的可以删除
 							// $.messager.alert(result.blogTypeId);
-							for(var i = 0; i < result.blogTypeId.length; i++){
+							for(var i = 0; i < result.data.blogTypeId.length; i++){
 								for(var j = 0; j < Rows.length; j++){
-									if(Rows[j].id == result.blogTypeId[i]){
+									if(Rows[j].id == result.data.blogTypeId[i]){
 										blogTypeNmae.push(Rows[j].typeName);
 									}
 								}
 							}
-							$.messager.alert("系统提示", '[' + blogTypeNmae + ']' + result.exist);
+							$.messager.alert("系统提示", '[' + blogTypeNmae + ']' + result.data.exist);
 						}else{
 							$.messager.alert("系统提示","数据已成功删除！");							
 						}

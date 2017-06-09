@@ -19,13 +19,6 @@
 <script type="text/javascript" charset="UTF-8" src="${pageContext.request.contextPath}/static/ueditor/lang/zh-cn/zh-cn.js"></script>
 
 <script type="text/javascript">
-    /*$(document).ready(function(){
-        result=eval("("+result.responseText+")");
-        $("#nickName").val(result.nickName);
-        $("#sign").val(result.sign);
-        UE.getEditor('profile').setContent(result.profile);
-    });*/
-
     function submitData(){
 		var nickName=$("#nickName").val();
 		var sign=$("#sign").val();
@@ -34,11 +27,9 @@
 
 		if(nickName==null || nickName==''){
 			alert("请输入昵称！");
-		}else if(sign==null || sign==''){
-			alert("请输入个性签名！");
-		}else if(profile==null || profile==''){
-			alert("请输入个人简介！");
-		}else{
+		}else if(nickName.length < 1 || nickName.length > 15) {
+            alert("要求昵称为1到15位的字符串");
+        }else{
 			// ueditor在个人简介那的script不能直接form提交所以多加了个input标签
 			// 将profile里的值(从ueditor里获得)传到input标签里，然后form提交
 			$("#pF").val(profile);
@@ -70,7 +61,7 @@
 			<tr>
 				<td>个性签名：</td>
 				<td>
-					<input type="text" id="sign" name="blogger.sign" style="width: 400px"  />
+					<input type="text" id="sign" name="sign" style="width: 400px"  />
 				</td>
 			</tr>
 			<tr>

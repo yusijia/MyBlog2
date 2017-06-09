@@ -39,13 +39,14 @@
 			},
 			success:function(result){
 				var result=eval('('+result+')');
-				if(result.success){
+				if(result.data.success){
 					$.messager.alert("系统提示","保存成功！");
 					resetValue();
 					$("#dlg").dialog("close");
 					$("#dg").datagrid("reload");
 				}else{
-					$.messager.alert("系统提示","保存失败！");
+				    // 一次只提醒一个错误原因
+					$.messager.alert("系统提示","保存失败！"+result.data[0].defaultMessage);
 					return;
 				}
 			}
@@ -78,7 +79,7 @@
 		$.messager.confirm("系统提示","您确定要删除这<font color=red>"+selectedRows.length+"</font>条数据吗？",function(r){
 			if(r){
 				$.post("${pageContext.request.contextPath}/admin/link/delete.do",{ids:ids},function(result){
-					if(result.success){
+					if(result.data.success){
 						$.messager.alert("系统提示","数据已成功删除！");							
 						$("#dg").datagrid("reload");
 					}else{

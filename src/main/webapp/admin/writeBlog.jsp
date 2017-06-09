@@ -24,6 +24,7 @@
 	function submitData(){
 		var title=$("#title").val();
 		var blogTypeId=$("#blogTypeId").combobox("getValue");
+        var blogTypeName = $("#blogTypeId").combobox("getText");
 		// 注意这里获取的content是有html标签的
 		var content=UE.getEditor('editor').getContent();
         content = content.replace(/"/g, "'");// 将全文"换成'，不然后台修改blog页面会显示语法错误,例如UE.getEditor('editor').getContent("<img src="">")
@@ -45,17 +46,18 @@
 				{
 					'title' : title,
 					'blogType.id' : blogTypeId,
+                    'blogType.typeName':blogTypeName,
 					'content' : content,
 					'contentNoTag' : contentNoTag,
 					'summary' : summary,
 					'keywords' : keywords
 				},
 				function(result){
-					if(result.success){
+					if(result.data.success){
 						alert("博客发布成功！");
 						resultValue();
 					}else{
-						alert("博客发布失败！");
+						alert("博客发布失败！"+result.data[0].defaultMessage);
 					}
 			},"json");}// 向后台传json格式的数据
 		
@@ -94,7 +96,7 @@
 			<td>所属类别：</td>
 			<td>
 				<select class="easyui-combobox" style="width: 154px" id="blogTypeId" name="blogType.id" editable="false" panelHeight="auto">
-					<option value="">请选择博客类别...</option>
+					<option value="-1">请选择博客类别...</option>
 					<c:forEach var="blogType" items="${blogTypeCountList }">
 						<option value="${blogType.id }">${blogType.typeName }</option>
 					</c:forEach>

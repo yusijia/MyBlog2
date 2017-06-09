@@ -8,14 +8,14 @@ package com.ysj.myblog.entity;
 public class PageBean {
 
 	private int page; 		// 第几页
-	private int pageSize; 	// 每页记录数
+	private int countOfBlogInPage; 	// 每页记录数
 	private int start; 		// 起始页
 	
 	
-	public PageBean(int page, int pageSize) {
+	public PageBean(int page, int countOfBlogInPage) {
 		super();
 		this.page = page;
-		this.pageSize = pageSize;
+		this.countOfBlogInPage = countOfBlogInPage;
 	}
 	
 	public int getPage() {
@@ -24,24 +24,22 @@ public class PageBean {
 	public void setPage(int page) {
 		this.page = page;
 	}
-	
-	public int getPageSize() {
-		return pageSize;
+	public int getCountOfBlogInPage() {
+		return countOfBlogInPage;
 	}
-
-	public void setPageSize(int pageSize) {
-		this.pageSize = pageSize;
+	public void setCountOfBlogInPage(int countOfBlogInPage) {
+		this.countOfBlogInPage = countOfBlogInPage;
 	}
 
 	public int getStart() {
-		return (page-1)*pageSize;
+		return (page-1)*countOfBlogInPage;
 	}
 
 	@Override
 	public String toString() {
 		return "PageBean{" +
 				"page=" + page +
-				", pageSize=" + pageSize +
+				", countOfBlogInPage=" + countOfBlogInPage +
 				", start=" + start +
 				'}';
 	}

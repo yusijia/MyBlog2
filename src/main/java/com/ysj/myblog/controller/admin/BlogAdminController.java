@@ -3,17 +3,20 @@ package com.ysj.myblog.controller.admin;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ysj.myblog.entity.Blog;
 import com.ysj.myblog.entity.PageBean;
+import com.ysj.myblog.entity.ResultObject;
+import com.ysj.myblog.entity.ResultStatusCode;
 import com.ysj.myblog.lucene.BlogIndex;
 import com.ysj.myblog.service.BlogService;
-import com.ysj.myblog.util.ResponseUtil;
 import com.ysj.myblog.util.StringUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,7 +49,8 @@ public class BlogAdminController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/save")
-	public void save(Blog blog, HttpServletResponse response) throws Exception{
+	@ResponseBody
+	public Object save(@Valid Blog blog, HttpServletResponse response) throws Exception{
 		int resultTotal;
 		// 传来了id就是修改，没传就是添加
 		if(blog.getId() == null){// 添加新文章
@@ -58,14 +62,13 @@ public class BlogAdminController {
 			blogIndex.updateIndex(blog); 
 		}
 
-		Map<String, Object> resultMap = new HashMap<String, Object>();
+		Map<String, Object> data = new HashMap<String, Object>();
 		if(resultTotal > 0){
-			resultMap.put("success", true);
+			data.put("success", true);
 		}else{
-			resultMap.put("success", false);
+			data.put("success", false);
 		}
-		String result = mapper.writeValueAsString(resultMap);
-		ResponseUtil.write(response, result);
+		return new ResultObject(ResultStatusCode.REQUEST_SUCCESS.getCode(), ResultStatusCode.REQUEST_SUCCESS.getMessage(), data);
 	}
 	
 	/**
@@ -78,7 +81,8 @@ public class BlogAdminController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/list")
-	public void list(@RequestParam(value="page", required=false)String page,
+	@ResponseBody
+	public Object list(@RequestParam(value="page", required=false)String page,
 						@RequestParam(value="rows",required=false)String rows,
 						Blog blog,
 						HttpServletResponse response)throws Exception{
@@ -94,8 +98,7 @@ public class BlogAdminController {
 		// easyUI规范要求必须返回rows和total两个参数才能解析成分页查询
 		resultMap.put("rows", blogList);// 将该页的blogList放到rows里
 		resultMap.put("total", total);// 总记录数
-		String result = mapper.writeValueAsString(resultMap);
-		ResponseUtil.write(response, result);
+		return resultMap;
 	}
 	
 	/**
@@ -106,7 +109,8 @@ public class BlogAdminController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/delete")
-	public void delete(@RequestParam(value="ids", required=false)String ids,
+	@ResponseBody
+	public Object delete(@RequestParam(value="ids", required=false)String ids,
 						HttpServletResponse response)throws Exception{
 		String []idsStr = ids.split(",");
 		for(int i = 0; i < idsStr.length; i++){
@@ -116,11 +120,9 @@ public class BlogAdminController {
 			blogIndex.deleteIndex(idsStr[i]);
 		}
 
-		Map<String, Object> resultMap = new HashMap<String, Object>();
-		resultMap.put("success", true);
-
-		String result = mapper.writeValueAsString(resultMap);
-		ResponseUtil.write(response, result);
+		Map<String, Object> data = new HashMap<String, Object>();
+		data.put("success", true);
+		return new ResultObject(ResultStatusCode.REQUEST_SUCCESS.getCode(), ResultStatusCode.REQUEST_SUCCESS.getMessage(), data);
 	}
 	
 	
@@ -132,13 +134,11 @@ public class BlogAdminController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/findById")
-	public void findById(@RequestParam(value="id")String id,
+	@ResponseBody
+	public Object findById(@RequestParam(value="id")String id,
 							HttpServletResponse response)throws Exception {
 		Blog blog = blogService.findById(Integer.parseInt(id));
-		
-		// 将blog对象封装成json对象
-		String result = mapper.writeValueAsString(blog);
-		ResponseUtil.write(response, result);
+		return blog;
 	}
 
 	/**

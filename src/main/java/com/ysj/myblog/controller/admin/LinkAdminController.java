@@ -3,14 +3,17 @@ package com.ysj.myblog.controller.admin;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ysj.myblog.entity.Link;
 import com.ysj.myblog.entity.PageBean;
+import com.ysj.myblog.entity.ResultObject;
+import com.ysj.myblog.entity.ResultStatusCode;
 import com.ysj.myblog.service.LinkService;
-import com.ysj.myblog.util.ResponseUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,7 +41,8 @@ public class LinkAdminController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/list")
-	public void list(@RequestParam(value="page",required=false)String page,
+	@ResponseBody
+	public Object list(@RequestParam(value="page",required=false)String page,
 					@RequestParam(value="rows",required=false)String rows,
 					HttpServletResponse response)throws Exception{
 		PageBean pageBean = new PageBean(Integer.parseInt(page),Integer.parseInt(rows));
@@ -53,10 +57,9 @@ public class LinkAdminController {
 		// easyUI分页组件需要的两个参数
 		resultMap.put("rows", linkList);
 		resultMap.put("total", total);
-		String result = mapper.writeValueAsString(resultMap);
-		// System.out.println(result);
-		// 返回给AJAX方法, 所以该方法为void，同下
-		ResponseUtil.write(response, result);
+		return resultMap;
+		/*String result = mapper.writeValueAsString(resultMap);
+		ResponseUtil.write(response, result);*/
 	}
 	
 	/**
@@ -66,7 +69,9 @@ public class LinkAdminController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/save")
-	public void save(Link link, HttpServletResponse response)throws Exception{
+	@ResponseBody
+	public Object save(@Valid Link link,
+					 HttpServletResponse response)throws Exception{
 		int resultTotal;
 		if (link.getId() == null) {
 			resultTotal = linkService.add(link);
@@ -74,33 +79,33 @@ public class LinkAdminController {
 			resultTotal = linkService.update(link);
 		}
 
-		Map<String,Object> resultMap = new HashMap<String,Object>();
+		Map<String,Object> data = new HashMap<String,Object>();
 		if(resultTotal > 0){
-			resultMap.put("success", true);
+			data.put("success", true);
 		}else{
-			resultMap.put("success", false);
+			data.put("success", false);
 		}
-		String result = mapper.writeValueAsString(resultMap);
-		ResponseUtil.write(response, result);
+		return new ResultObject(ResultStatusCode.REQUEST_SUCCESS.getCode(), ResultStatusCode.REQUEST_SUCCESS.getMessage(), data);
 	}
 	
 	/**
-	 * 友情链接信息删除
+	 * 删除友情链接信息
 	 * @param ids 从前台传来的要删除的link的id(逗号分隔)
 	 * @param response
 	 * @throws Exception
 	 */
 	@RequestMapping("/delete")
-	public void delete(@RequestParam(value="ids", required=false)String ids,
+	@ResponseBody
+	public Object delete(@RequestParam(value="ids", required=false)String ids,
 						  HttpServletResponse response)throws Exception{
 		String [] idsStr = ids.split(",");
 
-		Map<String,Object> resultMap = new HashMap<String,Object>();
 		for(int i = 0; i < idsStr.length; i++){
 			linkService.delete(Integer.parseInt(idsStr[i]));				
 		}
-		resultMap.put("success", true);
-		String result = mapper.writeValueAsString(resultMap);
-		ResponseUtil.write(response, result);
+
+		Map<String,Object> data = new HashMap<String,Object>();
+		data.put("success", true);
+		return new ResultObject(ResultStatusCode.SUCCESS.getCode(), ResultStatusCode.SUCCESS.getMessage(), data);
 	}
 }

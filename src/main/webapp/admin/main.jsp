@@ -10,7 +10,6 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/static/jquery-easyui-1.3.3/jquery.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/static/jquery-easyui-1.3.3/jquery.easyui.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/static/jquery-easyui-1.3.3/locale/easyui-lang-zh_CN.js"></script>
-
 <script type="text/javascript">
 
 	var url;
@@ -55,7 +54,7 @@
 			},
 			success:function(result){
 				var result=eval('('+result+')');
-				if(result.success){
+				if(result.data.success){
 					$.messager.alert("系统提示","密码修改成功,下一次登录启用新密码！");
 					resetValue();
 					$("#dlg").dialog("close");
@@ -139,8 +138,10 @@
 		<div title="个人信息管理"  data-options="iconCls:'icon-grxx'" style="padding:10px">
 			<a href="javascript:openTab('修改个人信息','modifyInfo.jsp','icon-grxxxg')" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-grxxxg'" style="width: 150px;">修改个人信息</a>
 		</div>
+		<div title="友情链接管理"  data-options="iconCls:'icon-link'" style="padding:10px">
+			<a href="javascript:openTab('友情链接管理','linkManage.jsp','icon-link')" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-link'" style="width: 150px">友情链接管理</a>
+		</div>
 		<div title="系统管理"  data-options="iconCls:'icon-system'" style="padding:10px">
-		    <a href="javascript:openTab('友情链接管理','linkManage.jsp','icon-link')" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-link'" style="width: 150px">友情链接管理</a>
 			<a href="javascript:openPasswordModifyDialog()" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-modifyPassword'" style="width: 150px;">修改密码</a>
 			<a href="javascript:refreshSystem()" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-refresh'" style="width: 150px;">刷新系统缓存</a>
 			<a href="javascript:logout()" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-exit'" style="width: 150px;">安全退出</a>

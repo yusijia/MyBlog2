@@ -45,7 +45,7 @@
 					ids:ids
 				},
 				function(result){
-					if(result.success){
+					if(result.data.success){
 						$.messager.alert("系统提示","数据已成功删除！");
 						$("#dg").datagrid("reload");
 					}else{

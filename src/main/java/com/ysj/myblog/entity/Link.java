@@ -1,5 +1,7 @@
 package com.ysj.myblog.entity;
 
+import javax.validation.constraints.Min;
+
 /**
  * 友情链接实体
  * @author ysj
@@ -11,6 +13,7 @@ public class Link {
 	private Integer id; 		// 编号
 	private String linkName; 	// 链接名称
 	private String linkUrl;		// 链接地址
+	@Min(value = 1, message = "排列等级最小为1")
 	private Integer orderNo; 	// 排序序号 从小到大排序
 	
 	public Integer getId() {

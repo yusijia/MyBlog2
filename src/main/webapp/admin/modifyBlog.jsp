@@ -22,10 +22,11 @@
 
     function submitData(){
 		var title=$("#title").val();
-		var blogTypeId=$("#blogTypeId").combobox("getValue")
-		var content=UE.getEditor('editor').getContent()
+		var blogTypeId=$("#blogTypeId").combobox("getValue");
+        var blogTypeName = $("#blogTypeId").combobox("getText");
+		var content=UE.getEditor('editor').getContent();
 		var keywords=$("#keywords").val();
-		
+
 		if(title==null || title==''){
 			alert("请输入标题！");
 		}else if(blogTypeId==null || blogTypeId==''){
@@ -38,15 +39,16 @@
 					'id':'${blog.id}',
 					'title':title,
 					'blogType.id':blogTypeId,
+		 			'blogType.typeName':blogTypeName,
 					'contentNoTag':UE.getEditor('editor').getContentTxt(),
 					'content':content,
 					'summary':UE.getEditor('editor').getContentTxt().substr(0,155),
 					'keywords':keywords
 				},function(result){
-					if(result.success){
+					if(result.data.success){
 						alert("博客修改成功！");
 					}else{
-						alert("博客修改失败！");
+						alert("博客修改失败！"+result.data[0].defaultMessage);
 					}
 			},"json");
 		}
@@ -68,7 +70,8 @@
 			<td>所属类别：</td>
 			<td>
 				<select class="easyui-combobox" style="width: 154px" id="blogTypeId" name="blogType.id" editable="false" panelHeight="auto">
-					<option value="">请选择所属类别...</option>
+					<!-- 后台验证blogType.id最小为0，所以-1属于非法值, 如果选这个后台验证将不通过 -->
+					<option value="-1">请选择所属类别...</option>
 					<c:forEach var="blogType" items="${blogTypeCountList }">
 						<option value="${blogType.id }">${blogType.typeName }</option>
 					</c:forEach>

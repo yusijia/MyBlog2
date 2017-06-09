@@ -1,6 +1,11 @@
 package com.ysj.myblog.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 /**
  * 作者实体
  * @author ysj
@@ -10,9 +15,12 @@ public class Blogger {
 
 	/*与数据库表有关联的属性*/
 	private int id;				// 博主id
+	@NotNull(message = "用户名不能为NULL")
 	private String userName;	// 用户名
-	private String password; 	// 用户密码
+	private String password; 	// 用户密码,注意：用了@JsonIgnore,json序列化时忽略该属性
 	private String profile;		// 用户简介
+	@NotNull(message = "昵称不能为NULL")
+	@Size(min = 1, max = 15, message = "要求昵称为1到15位的字符串")
 	private String nickName;	// 昵称
 	private String sign;		// 个性签名
 	private String imageName;	// 头像文件名
@@ -30,6 +38,7 @@ public class Blogger {
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
+	@JsonIgnore
 	public String getPassword() {
 		return password;
 	}

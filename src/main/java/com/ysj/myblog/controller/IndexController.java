@@ -135,10 +135,10 @@ public class IndexController {
 			String blogInfo = blog.getContent();		 // 存该文章的内容
 			Document doc = Jsoup.parse(blogInfo);		 // 解析文章内容
 			// Elements jpgs = doc.select("img[src$=.jpg]");// 选择器提取img元素后缀为jpg的图
-			Elements jpgs = doc.select("img"); // 选择器提取img元素
-			for (int i = 0; i < jpgs.size(); i++) {
-				Element jpg = jpgs.get(i);
-				imageList.add(jpg.toString());			 
+			Elements imgs = doc.select("img"); // 选择器提取img元素
+			for (int i = 0; i < imgs.size(); i++) {
+				Element img = imgs.get(i);
+				imageList.add(img.toString());
 				if (i == 2) { // 控制最多只显示三种缩略图
 					break;
 				}

@@ -18,12 +18,15 @@
 	function submitData(){
 		var title=$("#title").val();
 		var blogTypeId=$("#blogTypeId").combobox("getValue");
+        var blogTypeName = $("#blogTypeId").combobox("getText");
 		// 数据库里存Markdown原文,附加一个"markdown:"用于修改的时候识别出是Markdown文档还是普通文档
 		var content = Editormd.getMarkdown();
 		// 无html标签的博客内容，注意这个没有存到数据库里,用于给Lucene建blogIndex
 		var contentNoTag = Editormd.getMarkdown();
 		var summary = Editormd.getMarkdown().substr(0,155);
 		var keywords=$("#keywords").val();
+
+
 
 		if(title==null || title==''){
 			alert("请输入标题！");
@@ -38,21 +41,22 @@
                     'id':'${blog.id}',
 					'title' : title,
 					'blogType.id' : blogTypeId,
+                    'blogType.typeName':blogTypeName,
 					'content' : "markdown:" + content,
 					'contentNoTag' : contentNoTag,
 					'summary' : summary,
 					'keywords' : keywords
 				},
 				function(result){
-					if(result.success){
+					if(result.data.success){
                         if(${blog.id==null} || ${blog.id==''}){
                             alert("博客发布成功！");
+                            resultValue();
 						}else {
                             alert("博客修改成功！");
                         }
-						resultValue();
 					}else{
-						alert("博客发布失败！");
+						alert("博客发布失败！"+result.data[0].defaultMessage);
 					}
 				},"json");
 		}// 向后台传json格式的数据
@@ -75,7 +79,7 @@
 
 	&nbsp;&nbsp;<label>所属类别：</label>
 	<select class="easyui-combobox" style="width: 154px" id="blogTypeId" name="blogType.id" editable="false" panelHeight="auto">
-		<option value="">请选择博客类别...</option>
+		<option value="-1">请选择博客类别...</option>
 		<c:forEach var="blogType" items="${blogTypeCountList }">
 			<option value="${blogType.id }">${blogType.typeName }</option>
 		</c:forEach>

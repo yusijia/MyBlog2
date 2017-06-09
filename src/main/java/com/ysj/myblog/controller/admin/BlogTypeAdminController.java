@@ -3,15 +3,18 @@ package com.ysj.myblog.controller.admin;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ysj.myblog.entity.BlogType;
 import com.ysj.myblog.entity.PageBean;
+import com.ysj.myblog.entity.ResultObject;
+import com.ysj.myblog.entity.ResultStatusCode;
 import com.ysj.myblog.service.BlogService;
 import com.ysj.myblog.service.BlogTypeService;
-import com.ysj.myblog.util.ResponseUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -39,17 +42,18 @@ public class BlogTypeAdminController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/list")
-	public void list(@RequestParam(value="page",required=false)String page,
+	@ResponseBody
+	public Object list(@RequestParam(value="page",required=false)String page,
 					@RequestParam(value="rows",required=false)String rows,
 					HttpServletResponse response)throws Exception{
-		// 分页用的
+		// 封装分页参数
 		PageBean pageBean = new PageBean(Integer.parseInt(page), Integer.parseInt(rows));
 		// 分页查询list时传入的map封装了start和size
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("start", pageBean.getStart());
 		map.put("size", pageBean.getCountOfBlogInPage());
 
-		// 查询出博客类型列表
+		// 查询出博客类型列表和总数
 		List<BlogType> blogTypeList = blogTypeService.list(map);
 		Long total = blogTypeService.getTotal(map);
 
@@ -57,9 +61,7 @@ public class BlogTypeAdminController {
 		// easyUI分页组件需要的两个参数
 		resultMap.put("rows", blogTypeList);
 		resultMap.put("total", total);
-
-		String result = mapper.writeValueAsString(resultMap);
-		ResponseUtil.write(response, result);
+		return resultMap;
 	}
 	
 	/**
@@ -69,7 +71,8 @@ public class BlogTypeAdminController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/save")
-	public void save(BlogType blogType, HttpServletResponse response)throws Exception{
+	@ResponseBody
+	public Object save(@Valid BlogType blogType, HttpServletResponse response)throws Exception{
 		int resultTotal;
 		// 选择添加或修改操作
 		if(blogType.getId() == null){
@@ -78,15 +81,13 @@ public class BlogTypeAdminController {
 			resultTotal = blogTypeService.update(blogType);
 		}
 
-		Map<String, Object> resultMap = new HashMap<String, Object>();
+		Map<String, Object> data = new HashMap<String, Object>();
 		if(resultTotal > 0){
-			resultMap.put("success", true);
+			data.put("success", true);
 		}else{
-			resultMap.put("success", false);
+			data.put("success", false);
 		}
-
-		String result = mapper.writeValueAsString(resultMap);
-		ResponseUtil.write(response, result);
+		return new ResultObject(ResultStatusCode.REQUEST_SUCCESS.getCode(), ResultStatusCode.REQUEST_SUCCESS.getMessage(), data);
 	}
 	
 	/**
@@ -96,7 +97,8 @@ public class BlogTypeAdminController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/delete")
-	public void delete(@RequestParam(value="ids", required=false)String ids,
+	@ResponseBody
+	public Object delete(@RequestParam(value="ids", required=false)String ids,
 							HttpServletResponse response)throws Exception{
 		String[] idsStr = ids.split(",");
 		// 因为类别下有文章而删除失败的博客类别ID
@@ -113,15 +115,13 @@ public class BlogTypeAdminController {
 			}
 		}
 
-		Map<String, Object> resultMap = new HashMap<String, Object>();
+		Map<String, Object> data = new HashMap<String, Object>();
 		if (isOK == false) {
-			resultMap.put("exist", "博客类别下有博客，不能删除！");
-			resultMap.put("blogTypeId", blogTypeId);
+			data.put("exist", "博客类别下有博客，不能删除！");
+			data.put("blogTypeId", blogTypeId);
 		}
-		resultMap.put("success", true);
-
-		String result = mapper.writeValueAsString(resultMap);
-		ResponseUtil.write(response, result);
+		data.put("success", true);
+		return new ResultObject(ResultStatusCode.REQUEST_SUCCESS.getCode(), ResultStatusCode.REQUEST_SUCCESS.getMessage(), data);
 	}
 	
 }
