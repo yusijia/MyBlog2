@@ -78,7 +78,7 @@
 	
 </script>
 </head>
-<body style="margin: 10px">
+<body style="margin: 0px">
 
 <div id="p" class="easyui-panel" title="编写博客" style="padding: 10px">
 	<table cellspacing="20px">

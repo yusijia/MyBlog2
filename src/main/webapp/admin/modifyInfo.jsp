@@ -38,7 +38,7 @@
 	}
 </script>
 </head>
-<body style="margin: 10px">
+<body style="margin: 0px">
 
 <div id="p" class="easyui-panel" title="修改个人信息" style="padding: 10px">
 	<!-- 有上传文件所以加 enctype="multipart/form-data" -->

@@ -26,8 +26,6 @@
 		var summary = Editormd.getMarkdown().substr(0,155);
 		var keywords=$("#keywords").val();
 
-
-
 		if(title==null || title==''){
 			alert("请输入标题！");
 		}else if(blogTypeId==null || blogTypeId==''){
@@ -104,9 +102,9 @@
                 height: 640,
                 markdown : "",
                 path : '${pageContext.request.contextPath }/static/editormd/lib/',
-                theme : "dark",
+                /*theme : "dark",
                 previewTheme : "dark",
-                editorTheme : "pastel-on-dark",
+                editorTheme : "pastel-on-dark",*/
                 emoji : true,
                 saveHTMLToTextarea : true,    // 保存 HTML 到 Textarea
                 tex : true,                   // 开启科学公式TeX语言支持，默认关闭

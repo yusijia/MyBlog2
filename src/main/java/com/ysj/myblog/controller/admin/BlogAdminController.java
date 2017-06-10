@@ -8,6 +8,7 @@ import com.ysj.myblog.entity.ResultStatusCode;
 import com.ysj.myblog.lucene.BlogIndex;
 import com.ysj.myblog.service.BlogService;
 import com.ysj.myblog.util.StringUtil;
+import org.apache.commons.lang.StringEscapeUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -152,6 +153,8 @@ public class BlogAdminController {
 		Blog blog = blogService.findById(Integer.parseInt(id));
 
 		if (blog.getContent().substring(0, 9).equals("markdown:")) {
+			// 数据库里blog的content为Markdown格式的文档，需要转义后再给Editor.md显示
+			blog.setContent(StringEscapeUtils.escapeJavaScript(blog.getContent()));
 			mav.setViewName("/admin/writeMarkdownBlog");
 		} else {
 			mav.setViewName("/admin/modifyBlog");
